@@ -33,20 +33,12 @@ export default class HomeScreen extends Component {
         cat = await this.serviceNews.getNewsByCategory(c);
         allNews.push(cat.articles);
       }
-      this.setState({ categories: categories });
+      console.log(allNews);
+      this.setState({ news: allNews });
     }
   }
 
   componentDidMount() {
-    this.serviceNews.getNewsByCategory().then(resp => {
-      this.setState({ news: resp.data });
-      console.log(resp.data);
-      console.log(resp.data.articles[0].title, "-----------------------------");
-      console.log(
-        this.state.news.articles[0].title,
-        "----------------------------- (mais via le state)"
-      );
-    });
     this.update();
   }
 
