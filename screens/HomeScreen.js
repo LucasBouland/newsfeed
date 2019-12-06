@@ -3,6 +3,7 @@ import { AsyncStorage, View, Button, FlatList } from "react-native";
 import { connect } from "react-redux";
 import { READ_FILTERS } from "../constants";
 import { getNewsByReadFilter } from "../redux/selectors";
+import { addNews } from "../redux/actions";
 import Icon from "react-native-vector-icons/Ionicons";
 import NewsService from "../services/NewsService";
 import ItemNews from "../components/ItemNews";
@@ -31,15 +32,23 @@ class HomeScreen extends Component {
   state = { news: [], categories: [] };
 
   async update() {
-    const categories = JSON.parse(await AsyncStorage.getItem("CATEGORIES"));
-    let allNews = [];
-    if (categories != null) {
-      for (const c of categories) {
-        cat = await this.serviceNews.getNewsByCategory(c);
-        allNews = [].concat(...cat.data.articles);
+    const news = mapStateToProps();
+    if (news != null) {
+      this.setState({ news: news });
+    } else {
+      const categories = JSON.parse(await AsyncStorage.getItem("CATEGORIES"));
+      let allNews = [];
+      if (categories != null) {
+        for (const c of categories) {
+          cat = await this.serviceNews.getNewsByCategory(c);
+          allNews = [].concat(...cat.data.articles);
+        }
+        uniquesNews = _.uniqBy(allNews, "title");
+        for (const n in uniquesNews) {
+          this.props.addNews(n);
+        }
+        this.setState({ news: uniquesNews });
       }
-      uniquesNews = _.uniqBy(allNews, "title");
-      this.setState({ news: uniquesNews });
     }
   }
 
