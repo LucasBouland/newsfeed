@@ -27,9 +27,8 @@ export default class HomeScreen extends Component {
     state = { news: [], categories: [] };
 
     async update() {
-        console.log('update start --------------------------------------------------------------------------------------------------------------------------------------------------');
         const categories = JSON.parse(await AsyncStorage.getItem("CATEGORIES"));
-        let data = await AsyncStorage.getItem('NEWS');
+        let data = await AsyncStorage.getItem("NEWS");
         console.log(data);
         let allNews = [];
         console.log(categories);
@@ -38,24 +37,13 @@ export default class HomeScreen extends Component {
                 cat = await this.serviceNews.getNewsByCategory(c);
                 allNews = [].concat(...cat.data.articles);
             }
-            console.log(uniquesNews);
             uniquesNews = _.uniqBy(allNews, "title");
-            uniquesNews = uniquesNews.filter(word => !data.includes(word));
-            /*console.log(data.length);
-            console.log(uniquesNews.length);
-            for (const u of uniquesNews) {
-                for (const d of data) {
-                    //console.log(i, j);
-                    if (u.title == d) {
-                        uniquesNews.splice(i, 1);
-                        i--;
-                        console.log(`deleted --------------- ${d.title} -----------------------------------------------------------------------------------`)
-                    }
-                }
-            }*/
+            console.log(uniquesNews);
+            if (data != null) {
+                uniquesNews = uniquesNews.filter(word => !data.includes(word.title));
+            }
             this.setState({ news: uniquesNews });
         }
-        console.log('update end ---------------------------------------------------------------------------------------------------------------------------');
     }
 
     componentDidMount() {
