@@ -12,6 +12,7 @@ export default class HomeScreen extends Component {
       title: "",
       headerRight: (
         <Icon
+          style={{ marginRight: 20 }}
           size={25}
           name={"ios-sync"}
           onPress={e.navigation.getParam("update")}
