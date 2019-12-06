@@ -4,6 +4,7 @@ import Icon from "react-native-vector-icons/Ionicons";
 import NewsService from "../services/NewsService";
 import ItemNews from "../components/ItemNews";
 import { ActivityIndicator } from "react-native-paper";
+import _ from "lodash";
 
 export default class HomeScreen extends Component {
   static navigationOptions = e => {
@@ -27,14 +28,14 @@ export default class HomeScreen extends Component {
 
   async update() {
     const categories = JSON.parse(await AsyncStorage.getItem("CATEGORIES"));
-    const allNews = [];
+    let allNews = [];
     if (categories != null) {
-      console.log("cats", categories);
       for (const c of categories) {
         cat = await this.serviceNews.getNewsByCategory(c);
-        allNews.push(cat);
+        allNews = [].concat(...cat.data.articles);
       }
-      this.setState({ news: allNews });
+      uniquesNews = _.uniqBy(allNews, "title");
+      this.setState({ news: uniquesNews });
     }
   }
 
@@ -57,7 +58,7 @@ export default class HomeScreen extends Component {
       <View style={{ flex: 1 }}>
         {this.state.news.length > 0 ? (
           <FlatList
-            data={this.state.news[1].data.articles}
+            data={this.state.news}
             renderItem={e => (
               <>
                 <ItemNews
