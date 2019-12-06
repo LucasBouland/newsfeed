@@ -10,16 +10,19 @@ export default class DetailsScreen extends Component {
 
   componentDidMount() {
     this.serv
-      .getNewsByTitle(this.props.navigation.getParam("title", "NONE"))
+      .getNewsByTitle(
+        '"' +
+          encodeURIComponent(this.props.navigation.getParam("title", "NONE")) +
+          '"'
+      )
+
       .then(resp => {
         this.setState({ data: resp.data });
-        console.log(resp, "a");
-        console.log(this.state.data, "a");
-        console.log(this.props.navigation.getParam("title"), "a a");
       });
   }
 
   render() {
+    console.log(this.state.data);
     return (
       <SafeAreaView style={{ flex: 2, marginTop: 10 }}>
         {this.state.data ? (
