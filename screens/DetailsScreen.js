@@ -40,7 +40,10 @@ export default class DetailsScreen extends Component {
                 alignItems: "center"
               }}
             >
-              <Image source={this.state.data.articles[0].urlToImage} />
+              <Image
+                style={{ width: 80, height: 80 }}
+                source={{ uri: this.state.data.articles[0].urlToImage }}
+              />
             </View>
             <View
               style={{
