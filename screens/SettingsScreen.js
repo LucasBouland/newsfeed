@@ -1,13 +1,5 @@
 import React, { Component } from "react";
-import {
-  Text,
-  TextInput,
-  Button,
-  View,
-  AsyncStorage,
-  SafeAreaView,
-  Picker
-} from "react-native";
+import { Text, Button, View, AsyncStorage, SafeAreaView } from "react-native";
 import MultiSelect from "react-native-multiple-select";
 import NewsService from "../services/NewsService";
 
@@ -72,10 +64,6 @@ class SettingsScreen extends Component {
     );
   };
 
-  clear = () => {
-    AsyncStorage.clear();
-  };
-
   onSelectedItemsChange = selectedCategories => {
     this.setState({ selectedCategories });
 
@@ -111,11 +99,19 @@ class SettingsScreen extends Component {
             onPress={() => console.log("test")}
           />
         </View>
+        <Cats ids={selectedCategories}></Cats>
         <Button title="Confirmer Catégories" onPress={this.save} />
-        <Button title="Clear" onPress={this.clear} />
       </SafeAreaView>
     );
   }
 }
 
+const Cats = props => {
+  const c = categories.filter(ca => props.ids.includes(ca.id));
+  txt = "";
+  for (const z of c) {
+    txt += z.name + " ";
+  }
+  return <Text>{txt}</Text>;
+};
 export default SettingsScreen;
