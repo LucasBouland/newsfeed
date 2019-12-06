@@ -75,6 +75,7 @@ class SettingsScreen extends Component {
   clear = () => {
     AsyncStorage.clear();
   };
+
   onSelectedItemsChange = selectedCategories => {
     this.setState({ selectedCategories });
 
@@ -111,14 +112,7 @@ class SettingsScreen extends Component {
           />
         </View>
         <Button title="Confirmer Catégories" onPress={this.save} />
-
-        <View>
-          <Text>
-            {this.state.selectedCategories
-              ? this.state.selectedCategories
-              : null}
-          </Text>
-        </View>
+        <Button title="Clear" onPress={this.clear} />
       </SafeAreaView>
     );
   }
