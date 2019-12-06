@@ -1,5 +1,5 @@
 import axios from "axios";
-const key = "a20b31ac48b04fa399e1b38500a0f4fc";
+const key = "afa08958bafc4cde80805363337a1f30";
 const url = `https://newsapi.org/v2/top-headlines?apiKey=${key}`;
 
 class NewsService {

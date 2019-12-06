@@ -1,12 +1,16 @@
 import React, { Component } from "react";
 import { AsyncStorage, View, Button, FlatList } from "react-native";
+import { connect } from "react-redux";
+import { READ_FILTERS } from "../constants";
+import { getNewsByReadFilter } from "../redux/selectors";
 import Icon from "react-native-vector-icons/Ionicons";
 import NewsService from "../services/NewsService";
 import ItemNews from "../components/ItemNews";
 import { ActivityIndicator } from "react-native-paper";
 import _ from "lodash";
+import readFilter from "../redux/reducers/readFilter";
 
-export default class HomeScreen extends Component {
+class HomeScreen extends Component {
   static navigationOptions = e => {
     return {
       title: "",
@@ -85,3 +89,12 @@ export default class HomeScreen extends Component {
     );
   }
 }
+
+const mapStateToProps = state => {
+  const { newsFilter } = state;
+  const news = getNewsByReadFilter(state, readFilter);
+
+  return { news };
+};
+
+export default connect(mapStateToProps)(HomeScreen);
