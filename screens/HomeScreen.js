@@ -13,7 +13,7 @@ export default class HomeScreen extends Component {
             headerRight: (
                 <Icon size={25} name={'ios-add'}
                     onPress={() => {
-                        e.navigation.push('AddFavorite');
+                        e.navigation.push('Details');
                     }} />
             )
         }
@@ -28,15 +28,21 @@ export default class HomeScreen extends Component {
     }
 
     componentDidMount() {
+        this.serviceWeather.getNewsByKeyword().then(resp => {
+            this.setState({ news: resp.data });
+            console.log(resp.data);
+        });
         this.update();
     }
+
+
 
     componentDidUpdate() {
         this.update();
     }
 
     delete = async (newsName) => {
-        const tab = this.state.news.map(e => e.name);
+        const tab = this.state.articles.map(e => e.name);
         tab.splice(tab.findIndex(e => e === newsName), 1);
         await AsyncStorage.setItem('NEWS', JSON.stringify(tab));
         this.update();
@@ -46,9 +52,9 @@ export default class HomeScreen extends Component {
         return (
             <View style={{ flex: 1 }}>
                 {this.state.news ? (
-                    <FlatList data={this.state.news}
+                    <FlatList data={this.state.news.articles}
                         renderItem={(e) => (
-                            <ItemNews key={e.item.name} city={e.item} onPress={ () => {e.navigation.push('AddFavorite');}} onDelete={this.delete} />
+                            <ItemNews key={e.item.name} news={e.item} onPress={ () => {e.navigation.push('Details');}} onDelete={this.delete} />
                         )} />
                 ) : (<ActivityIndicator />)}
             </View>

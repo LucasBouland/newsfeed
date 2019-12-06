@@ -4,6 +4,7 @@ const url = `https://newsapi.org/v2/everything?apiKey=${key}`;
 
 class NewsService {
     getNewsByKeyword(keyword = 'bitcoin') {
+        console.log(`${url}&q=${keyword}`);
         return axios.get(`${url}&q=${keyword}`);
     }
 }
