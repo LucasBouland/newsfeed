@@ -10,7 +10,7 @@ class NewsService {
 
   getNewsByTitle(title) {
     console.log(`${urlAll}&q=${title}`);
-    return axios.get(encodeURI(`${urlAll}&qInTitle=${title}`));
+    return axios.get(`${urlAll}&qInTitle=${title}`);
   }
 }
 
