@@ -34,7 +34,7 @@ class ItemNews extends Component {
           >
             <Text>{this.props.news.title}</Text>
             <View style={{ flex: 1, flexDirection: "row" }}>
-              <Text>{"\n"}Catégorie</Text>
+              <Text>{this.props.news.publishedAt}</Text>
             </View>
           </View>
         </View>

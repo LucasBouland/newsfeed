@@ -112,6 +112,7 @@ class SettingsScreen extends Component {
           />
         </View>
         <Button title="Confirmer Catégories" onPress={this.save} />
+        <Button title="Clear" onPress={this.clear} />
       </SafeAreaView>
     );
   }

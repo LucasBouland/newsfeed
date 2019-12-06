@@ -23,12 +23,13 @@ export default class HomeScreen extends Component {
 
   serviceNews = new NewsService();
 
-  state = { news: null, categories: [] };
+  state = { news: [], categories: [] };
 
   async update() {
     const categories = JSON.parse(await AsyncStorage.getItem("CATEGORIES"));
     const allNews = [];
     if (categories != null) {
+      console.log("cats", categories);
       for (const c of categories) {
         cat = await this.serviceNews.getNewsByCategory(c);
         allNews.push(cat);
@@ -54,13 +55,13 @@ export default class HomeScreen extends Component {
   render() {
     return (
       <View style={{ flex: 1 }}>
-        {this.state.news ? (
+        {this.state.news.length > 0 ? (
           <FlatList
-            data={this.state.news.articles}
+            data={this.state.news[1].data.articles}
             renderItem={e => (
               <>
                 <ItemNews
-                  key={e.item.name}
+                  key={e.item.title}
                   news={e.item}
                   onDelete={this.delete}
                 />
