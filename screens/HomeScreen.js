@@ -13,10 +13,8 @@ export default class HomeScreen extends Component {
             headerRight: (
                 <Icon
                     size={25}
-                    name={"ios-add"}
-                    onPress={() => {
-                        e.navigation.push("Details");
-                    }}
+                    name={"ios-sync"}
+                    onPress={console.log('update')}
                 />
             )
         };
