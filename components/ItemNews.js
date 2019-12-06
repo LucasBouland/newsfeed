@@ -1,5 +1,12 @@
 import React, { Component } from "react";
-import { View, Button, StyleSheet, Text, Image } from "react-native";
+import {
+  View,
+  Button,
+  StyleSheet,
+  Text,
+  Image,
+  SafeAreaView
+} from "react-native";
 import PropTypes from "prop-types";
 import { SwipeRow } from "react-native-swipe-list-view";
 
@@ -12,6 +19,8 @@ class ItemNews extends Component {
   state = {};
 
   render() {
+    // titre, la source, la date de publication et une image.
+    //Les news lues sont stockées dans le storage via un reducer.
     return (
       <SwipeRow
         leftOpenValue={75}
@@ -28,14 +37,17 @@ class ItemNews extends Component {
           <View
             style={{
               flex: 1,
-              flexDirection: "row",
+              flexDirection: "column",
               justifyContent: "space-between"
             }}
           >
-            <Text>{this.props.news.title}</Text>
-            <View style={{ flex: 1, flexDirection: "row" }}>
-              <Text>{this.props.news.publishedAt}</Text>
-            </View>
+            <Text>{"Titre: " + this.props.news.title}</Text>
+            <Text>{"Source:" + this.props.news.source.name}</Text>
+            <Image
+              style={{ width: 80, height: 80 }}
+              source={{ uri: this.props.news.urlToImage }}
+            />
+            <Text>{"Publié le:" + this.props.news.publishedAt}</Text>
           </View>
         </View>
       </SwipeRow>
@@ -44,13 +56,19 @@ class ItemNews extends Component {
 }
 
 export default ItemNews;
+//  <DatePublished time={this.props.news.publishedAt}></DatePublished>
+const DatePublished = props => {
+  const dt = Date.parse(props.time);
+  const result = `${dt.now()}`;
+  return <Text>Publié le: {result}</Text>;
+};
 
 const styles = StyleSheet.create({
   standaloneRowFront: {
     alignItems: "center",
     backgroundColor: "#CCC",
     justifyContent: "center",
-    height: 80
+    height: 180
   },
   standaloneRowBack: {
     alignItems: "center",
