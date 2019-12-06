@@ -9,21 +9,13 @@ export default class DetailsScreen extends Component {
   serv = new NewsService();
 
   componentDidMount() {
-    this.serv
-      .getNewsByTitle(
-        '"' +
-          encodeURIComponent(this.props.navigation.getParam("title", "NONE")) +
-          '"'
-      )
-
-      .then(resp => {
-        this.setState({ data: resp.data });
-      });
+    this.setState({
+      data: this.props.navigation.getParam("detailsArticle", null)
+    });
   }
 
   render() {
-    console.log(this.state.data);
-    return (
+    return this.state.data ? (
       <SafeAreaView style={{ flex: 2, marginTop: 10 }}>
         {this.state.data ? (
           <>
@@ -34,7 +26,7 @@ export default class DetailsScreen extends Component {
                 alignItems: "center"
               }}
             >
-              <Text>{this.state.data.articles[0].title}</Text>
+              <Text>{this.state.data.title}</Text>
             </View>
             <View
               style={{
@@ -45,7 +37,7 @@ export default class DetailsScreen extends Component {
             >
               <Image
                 style={{ width: 80, height: 80 }}
-                source={{ uri: this.state.data.articles[0].urlToImage }}
+                source={{ uri: this.state.data.urlToImage }}
               />
             </View>
             <View
@@ -55,7 +47,7 @@ export default class DetailsScreen extends Component {
                 alignItems: "center"
               }}
             >
-              <Text>{this.state.data.articles[0].publishedAt}</Text>
+              <Text>{this.state.data.publishedAt}</Text>
             </View>
             <View
               style={{
@@ -64,7 +56,7 @@ export default class DetailsScreen extends Component {
                 alignItems: "center"
               }}
             >
-              <Text>{this.state.data.articles[0].author}</Text>
+              <Text>{this.state.data.author}</Text>
             </View>
             <View
               style={{
@@ -73,13 +65,15 @@ export default class DetailsScreen extends Component {
                 alignItems: "center"
               }}
             >
-              <Text>{this.state.data.articles[0].content}</Text>
+              <Text>{this.state.data.content}</Text>
             </View>
           </>
         ) : (
           <Loading displayColor="orange"></Loading>
         )}
       </SafeAreaView>
+    ) : (
+      <></>
     );
   }
 }

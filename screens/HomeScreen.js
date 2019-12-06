@@ -69,8 +69,9 @@ export default class HomeScreen extends Component {
                 <Button
                   title="Details"
                   onPress={() => {
+                    console.log("ee", e.item);
                     this.props.navigation.push("Details", {
-                      title: e.item.title
+                      detailsArticle: e.item
                     });
                   }}
                 ></Button>
