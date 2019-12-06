@@ -13,7 +13,7 @@ class ItemNews extends Component {
 
     render() {
         return (
-            <SwipeRow leftOpenValue={0} rightOpenValue={-75} key={this.props.news.title}>
+            <SwipeRow leftOpenValue={75} rightOpenValue={0} key={this.props.news.title}>
                 <View style={styles.standaloneRowBack}>
                     <Button title="Suppr." onPress={() => this.props.onDelete(this.props.news.title)}></Button>
                 </View>
