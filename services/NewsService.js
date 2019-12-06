@@ -1,7 +1,7 @@
 import axios from "axios";
 const key = "a20b31ac48b04fa399e1b38500a0f4fc";
-const url = `https://newsapi.org/v2/top-headlines?apiKey=${key}`;
-
+const url = `https://newsapi.org/v2/top-headlines?apiKey=${key}&country=us`;
+const urlAll = `https://newsapi.org/v2/everything?apiKey=${key}`;
 class NewsService {
   getNewsByCategory(keyword = "general") {
     console.log(`${url}&category=${keyword}`);
@@ -9,8 +9,8 @@ class NewsService {
   }
 
   getNewsByTitle(title) {
-    console.log(`${url}&q=${title}`);
-    return axios.get(`${url}&q=${title}`);
+    console.log(`${urlAll}&q=${title}`);
+    return axios.get(`${urlAll}&q=${title}`);
   }
 }
 
