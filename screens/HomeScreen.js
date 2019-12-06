@@ -7,36 +7,32 @@ import { ActivityIndicator } from "react-native-paper";
 import _ from "lodash";
 
 export default class HomeScreen extends Component {
-    static navigationOptions = e => {
-        return {
-            title: "",
-            headerRight: (
-                <Icon
-                    size={25}
-                    name={"ios-sync"}
-                    onPress={console.log('update')}
-                />
-            )
-        };
+  static navigationOptions = e => {
+    return {
+      title: "",
+      headerRight: (
+        <Icon
+          size={25}
+          name={"ios-sync"}
+          onPress={e.navigation.getParam("update")}
+        />
+      )
     };
 
     serviceNews = new NewsService();
 
     state = { news: [], categories: [] };
 
-    async update() {
+     update = async () => {
         const categories = JSON.parse(await AsyncStorage.getItem("CATEGORIES"));
         let data = await AsyncStorage.getItem("NEWS");
-        console.log(data);
         let allNews = [];
-        console.log(categories);
         if (categories != null) {
             for (const c of categories) {
                 cat = await this.serviceNews.getNewsByCategory(c);
                 allNews = [].concat(...cat.data.articles);
             }
             uniquesNews = _.uniqBy(allNews, "title");
-            console.log(uniquesNews);
             if (data != null) {
                 uniquesNews = uniquesNews.filter(word => !data.includes(word.title));
             }
@@ -47,6 +43,23 @@ export default class HomeScreen extends Component {
     componentDidMount() {
         this.update();
     }
+  update = async () => {
+    const categories = JSON.parse(await AsyncStorage.getItem("CATEGORIES"));
+    let allNews = [];
+    if (categories != null) {
+      for (const c of categories) {
+        cat = await this.serviceNews.getNewsByCategory(c);
+        allNews = [].concat(...cat.data.articles);
+      }
+      uniquesNews = _.uniqBy(allNews, "title");
+      this.setState({ news: uniquesNews });
+    }
+  };
+
+  componentDidMount() {
+    this.props.navigation.setParams({ update: this.update });
+    this.update();
+  }
 
     delete = async newsName => {
         console.log('delete start ----------------------------------------------------------------------------------------------------------------------------');
