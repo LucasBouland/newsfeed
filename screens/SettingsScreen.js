@@ -1,60 +1,127 @@
-import React, { Component } from 'react';
-import { TextInput, Button, View, AsyncStorage } from 'react-native';
-import NewsService from '../services/NewsService';
+import React, { Component } from "react";
+import {
+  Text,
+  TextInput,
+  Button,
+  View,
+  AsyncStorage,
+  SafeAreaView,
+  Picker
+} from "react-native";
+import MultiSelect from "react-native-multiple-select";
+import NewsService from "../services/NewsService";
+
+this.categories = [
+  {
+    name: "Affaires",
+    id: "business"
+  },
+  {
+    name: "Divertissement",
+    id: "entertainment"
+  },
+  {
+    name: "Général",
+    id: "general"
+  },
+  {
+    name: "Santé",
+    id: "health"
+  },
+  {
+    name: "Sciences",
+    id: "science"
+  },
+  {
+    name: "Sport",
+    id: "sports"
+  },
+  {
+    name: "Technologie",
+    id: "technology"
+  }
+];
 
 class SettingsScreen extends Component {
-    static navigationOptions = (e) => {
-        return {
-            title: 'Ajouter une catégorie'
-        }
-    }
+  static navigationOptions = e => {
+    return {
+      title: "Ajouter une catégorie"
+    };
+  };
 
-    serviceNews = new NewsService();
+  serviceNews = new NewsService();
 
-    state = { category: '' }
+  state = { selectedCategories: [], category: "" };
 
-    onChange = (value) => {
-        this.setState({ category: value });
-    }
+  componentDidMount() {
+    AsyncStorage.getItem("CATEGORIES").then(data => {
+      storedCategories = JSON.parse(data);
+      if (storedCategories != null) {
+        this.setState({ selectedCategories: storedCategories });
+      }
+    });
+  }
+  onChange = value => {
+    this.setState({ category: value });
+  };
 
-    save2 = async () => {
-        let news = await this.serviceNews.getNewsByKeyword(this.state.category);
-        if (news != null) {
-            let data = await AsyncStorage.getItem('NEWS');
-            let tab = [];
-            if (data != null) {
-                tab = JSON.parse(data);
-            }
-            tab.push(this.state.category);
-            await AsyncStorage.setItem('NEWS', JSON.stringify(tab));
-            this.props.navigation.goBack();
-        } else {
-            alert(`La catégorie n'existe pas`);
-        }
-    }
+  save = async () => {
+    await AsyncStorage.setItem(
+      "CATEGORIES",
+      JSON.stringify(this.state.selectedCategories)
+    );
+  };
 
-    save = () => {
-        AsyncStorage.getItem('NEWS').then(data => {
-            let tab = [];
-            if (data != null) {
-                tab = JSON.parse(data);
-            }
-            tab.push(this.state.category);
-            AsyncStorage.setItem('NEWS', JSON.stringify(tab)).then(() => {
-                this.props.navigation.goBack();
-            });
-        });
+  clear = () => {
+    AsyncStorage.clear();
+  };
+  onSelectedItemsChange = selectedCategories => {
+    this.setState({ selectedCategories });
 
-    }
+    //Set Selected Items
+  };
 
-    render() {
-        return (
-            <View style={{ flex: 1 }}>
-                <TextInput onChangeText={this.onChange} />
-                <Button title="Ajouter" onPress={this.save2} />
-            </View>
-        );
-    }
+  render() {
+    const { selectedCategories } = this.state;
+    return (
+      <SafeAreaView style={{ flex: 1 }}>
+        <View style={{ flex: 1, padding: 30 }}>
+          <MultiSelect
+            hideTags
+            items={categories}
+            uniqueKey="id"
+            ref={component => {
+              this.multiSelect = component;
+            }}
+            onSelectedItemsChange={this.onSelectedItemsChange}
+            selectedItems={selectedCategories}
+            selectText="Choisir les catégories"
+            searchInputPlaceholderText="Rechercher une catégorie..."
+            onChangeInput={text => console.log(text)}
+            tagRemoveIconColor="#CCC"
+            tagBorderColor="#CCC"
+            tagTextColor="#CCC"
+            selectedItemTextColor="#CCC"
+            selectedItemIconColor="#CCC"
+            itemTextColor="#000"
+            displayKey="name"
+            searchInputStyle={{ color: "#CCC" }}
+            hideSubmitButton={true}
+            onPress={() => console.log("test")}
+          />
+        </View>
+        <Button title="Confirmer Catégories" onPress={this.save} />
+
+        <View>
+          <Text>
+            {this.state.selectedCategories
+              ? this.state.selectedCategories
+              : null}
+          </Text>
+        </View>
+      </SafeAreaView>
+    );
+  }
 }
 
 export default SettingsScreen;

@@ -6,22 +6,22 @@ import { SwipeRow } from 'react-native-swipe-list-view';
 class ItemNews extends Component {
     static propTypes = {
         onDelete: PropTypes.func.isRequired,
-        city: PropTypes.any.isRequired
+        news: PropTypes.any.isRequired
     }
 
     state = {}
 
     render() {
         return (
-            <SwipeRow leftOpenValue={0} rightOpenValue={-75} key={this.props.news.title}>
+            <SwipeRow leftOpenValue={75} rightOpenValue={0} key={this.props.news.title}>
                 <View style={styles.standaloneRowBack}>
                     <Button title="Suppr." onPress={() => this.props.onDelete(this.props.news.title)}></Button>
                 </View>
                 <View style={styles.standaloneRowFront}>
                     <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'space-between' }}>
-                        <Text>Titre</Text>
+                        <Text>{this.props.news.title}</Text>
                         <View style={{ flex: 1, flexDirection: 'row' }}>
-                            <Text>Catégorie</Text>
+                            <Text>{'\n'}Catégorie</Text>
                         </View>
                     </View>
                 </View>
