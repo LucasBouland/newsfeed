@@ -77,6 +77,7 @@ export default class HomeScreen extends Component {
                 ></Button>
               </>
             )}
+            keyExtractor={(item, index) => index.toString()}
           />
         ) : (
           <ActivityIndicator />
