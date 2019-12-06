@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { AsyncStorage, View, Button, FlatList } from "react-native";
+import { AsyncStorage, View, Button, FlatList, Text } from "react-native";
 import Icon from "react-native-vector-icons/Ionicons";
 import NewsService from "../services/NewsService";
 import ItemNews from "../components/ItemNews";
@@ -23,13 +23,15 @@ export default class HomeScreen extends Component {
 
   serviceNews = new NewsService();
 
-  state = { news: [], categories: [] };
+  state = { news: [], categories: [], noCategories: false };
 
   update = async () => {
     const categories = JSON.parse(await AsyncStorage.getItem("CATEGORIES"));
+
     let data = await AsyncStorage.getItem("NEWS");
+    console.log(categories);
     let allNews = [];
-    if (categories != null) {
+    if (categories.length > 0) {
       for (const c of categories) {
         cat = await this.serviceNews.getNewsByCategory(c);
         allNews = [].concat(...cat.data.articles);
@@ -38,7 +40,11 @@ export default class HomeScreen extends Component {
       if (data != null) {
         uniquesNews = uniquesNews.filter(word => !data.includes(word.title));
       }
+      console.log(uniquesNews);
+      this.setState({ noCategories: false });
       this.setState({ news: uniquesNews });
+    } else {
+      this.setState({ noCategories: true });
     }
   };
 
@@ -68,7 +74,9 @@ export default class HomeScreen extends Component {
   render() {
     return (
       <View style={{ flex: 1 }}>
-        {this.state.news.length > 0 ? (
+        {this.state.noCategories ? (
+          <Text>Vous devez selectionner des catégories</Text>
+        ) : this.state.news.length > 0 ? (
           <FlatList
             data={this.state.news}
             renderItem={e => (
