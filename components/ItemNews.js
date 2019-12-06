@@ -19,9 +19,9 @@ class ItemNews extends Component {
                 </View>
                 <View style={styles.standaloneRowFront}>
                     <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'space-between' }}>
-                        <Text>Titre</Text>
+                        <Text>{this.props.news.title}</Text>
                         <View style={{ flex: 1, flexDirection: 'row' }}>
-                            <Text>Catégorie</Text>
+                            <Text>{'\n'}Catégorie</Text>
                         </View>
                     </View>
                 </View>

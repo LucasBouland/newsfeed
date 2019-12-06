@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { AsyncStorage, View, FlatList } from 'react-native';
+import { AsyncStorage, View, Button, FlatList } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import NewsService from '../services/NewsService';
 import ItemNews from '../components/ItemNews';
@@ -31,6 +31,8 @@ export default class HomeScreen extends Component {
         this.serviceWeather.getNewsByKeyword().then(resp => {
             this.setState({ news: resp.data });
             console.log(resp.data);
+            console.log(resp.data.articles[0].title, '-----------------------------');
+            console.log(this.state.news.articles[0].title, '----------------------------- (mais via le state)');
         });
         this.update();
     }
@@ -54,7 +56,10 @@ export default class HomeScreen extends Component {
                 {this.state.news ? (
                     <FlatList data={this.state.news.articles}
                         renderItem={(e) => (
-                            <ItemNews key={e.item.name} news={e.item} onPress={ () => {e.navigation.push('Details');}} onDelete={this.delete} />
+                            <>
+                                <ItemNews key={e.item.name} news={e.item} onDelete={this.delete} />
+                                <Button title="Details" onPress={ () => {this.props.navigation.push('Details', { title : e.item.title});}}></Button>
+                            </>
                         )} />
                 ) : (<ActivityIndicator />)}
             </View>
