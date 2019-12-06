@@ -30,27 +30,29 @@ export default class HomeScreen extends Component {
         console.log('update start --------------------------------------------------------------------------------------------------------------------------------------------------');
         const categories = JSON.parse(await AsyncStorage.getItem("CATEGORIES"));
         let data = await AsyncStorage.getItem('NEWS');
-        AsyncStorage.clear();
         console.log(data);
         let allNews = [];
+        console.log(categories);
         if (categories != null) {
             for (const c of categories) {
                 cat = await this.serviceNews.getNewsByCategory(c);
                 allNews = [].concat(...cat.data.articles);
             }
+            console.log(uniquesNews);
             uniquesNews = _.uniqBy(allNews, "title");
-            console.log(data.length);
+            uniquesNews = uniquesNews.filter(word => !data.includes(word));
+            /*console.log(data.length);
             console.log(uniquesNews.length);
-            for (i = 0; i < uniquesNews.length; i++) {
-                for (j = 0; j < data.length; j++) {
+            for (const u of uniquesNews) {
+                for (const d of data) {
                     //console.log(i, j);
-                    if (uniquesNews[i].title == data[j]) {
+                    if (u.title == d) {
                         uniquesNews.splice(i, 1);
                         i--;
                         console.log(`deleted --------------- ${d.title} -----------------------------------------------------------------------------------`)
                     }
                 }
-            }
+            }*/
             this.setState({ news: uniquesNews });
         }
         console.log('update end ---------------------------------------------------------------------------------------------------------------------------');
