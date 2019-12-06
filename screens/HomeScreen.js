@@ -31,9 +31,8 @@ export default class HomeScreen extends Component {
     if (categories != null) {
       for (const c of categories) {
         cat = await this.serviceNews.getNewsByCategory(c);
-        allNews.push(cat.articles);
+        allNews.push(cat);
       }
-      console.log(allNews);
       this.setState({ news: allNews });
     }
   }
