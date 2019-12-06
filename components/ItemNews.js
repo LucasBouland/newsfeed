@@ -6,7 +6,7 @@ import { SwipeRow } from 'react-native-swipe-list-view';
 class ItemNews extends Component {
     static propTypes = {
         onDelete: PropTypes.func.isRequired,
-        city: PropTypes.any.isRequired
+        news: PropTypes.any.isRequired
     }
 
     state = {}
